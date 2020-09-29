@@ -1,0 +1,8 @@
+# Project exclude paths
+/health_common/target/
+/health_dao/target/
+/health_interface/target/
+/health_mobile/target/
+/health_pojo/target/
+/health_service/target/
+/health_web/target/
