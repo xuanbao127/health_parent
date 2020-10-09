@@ -4,6 +4,7 @@ import com.itheima.health.HealthException;
 import com.itheima.health.entity.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,5 +41,11 @@ public class HealthExceptionHandler {
     public Result handleException(Exception e){
         log.error("发生未知异常",e);
         return new Result(false, "操作失败，发生未知异常，请联系管理员");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result handleAccessDeniedException(AccessDeniedException e){
+        log.error("没有权限",e);
+        return new Result(false, "权限不足");
     }
 }

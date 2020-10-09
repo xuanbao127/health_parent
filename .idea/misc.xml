@@ -3,6 +3,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/health_mobile" />
     <file type="web" url="file://$PROJECT_DIR$/health_web" />
+    <file type="web" url="file://$PROJECT_DIR$/springsecurity_demo" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

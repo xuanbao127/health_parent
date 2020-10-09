@@ -10,8 +10,11 @@ import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiNiuUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,6 +34,9 @@ public class SetmealController {
 
     @Reference
     private SetmealService setmealService;
+
+    @Autowired
+    private JedisPool jedisPool;
 
     /**
      * 上传图片
@@ -70,7 +76,12 @@ public class SetmealController {
     @PostMapping("/add")
     public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
         // 调用服务添加套餐
-        setmealService.add(setmeal,checkgroupIds);
+        Integer setmealId = setmealService.add(setmeal, checkgroupIds);
+        // 添加redis生成静态页面的任务
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, setmealId+"|1|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
     }
 
@@ -112,6 +123,10 @@ public class SetmealController {
     public Result update(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
         // 调用服务更新套餐
         setmealService.update(setmeal,checkgroupIds);
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, setmeal.getId()+"|1|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true, MessageConstant.EDIT_SETMEAL_SUCCESS);
     }
 
@@ -122,6 +137,10 @@ public class SetmealController {
     public Result deleteById(int id){
         // 调用服务删除套餐
         setmealService.deleteById(id);
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, id+"|0|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true, "删除套餐成功!");
     }
 }

@@ -6,6 +6,7 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: No Description
@@ -75,4 +76,10 @@ public interface SetmealService {
     Setmeal findDetailById2(int id);
 
     Setmeal findDetailById3(int id);
+
+    /**
+     * 统计套餐预约个数
+     * @return
+     */
+    List<Map<String, Object>> getSetmealReport();
 }

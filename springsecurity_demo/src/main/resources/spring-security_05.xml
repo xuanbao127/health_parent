@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<!--【注意】在这个security的配置中，所有的路径必须有/开头-->
+<!--  静态资源过滤  -->
+<!--  security:none不需要任务的控制，可以所有人都可以访问  -->
+<!-- 登陆页面访问，一定要加静态过滤 不加：浏览器报重试次数过多错误   -->
+    <security:http pattern="/login.html" security="none"/>
+    <security:http pattern="/fail.html" security="none"/>
+
+<!--  拦截规则
+auto-config: 自动配置 login处理，登陆页面，退出处理...
+use-expressions: 是否使用spring el表达式
+               true: access的值 hasRole hasAuthority hasAny...
+               false: access的值只能是以ROLE_打头或那3个常量，否则启动报错
+-->
+    <security:http auto-config="true" use-expressions="true">
+        <!--intercept-url: 拦截url, 标定访问的权限
+            pattern: url匹配的规则 /** 拦截所有
+            access: 需要什么的权限才可以访问
+            登陆者必须拥有access中的权限(即可以是角色也可以是权限)才可以访问pattern的路径
+
+            isAuthenticated: 认证过了
+        只要认证通过就可以访问-->
+        <security:intercept-url pattern="/index.html"  access="isAuthenticated()" />
+        <security:intercept-url pattern="/a.html"  access="isAuthenticated()" />
+
+        <!--拥有add权限就可以访问b.html页面-->
+        <security:intercept-url pattern="/b.html"  access="hasAuthority('add')" />
+
+        <!--拥有ROLE_ADMIN角色就可以访问c.html页面，
+            注意：此处虽然写的是ADMIN角色，框架会自动加上前缀ROLE_-->
+        <security:intercept-url pattern="/c.html"  access="hasRole('ADMIN')" />
+
+        <!--拥有ROLE_ADMIN角色就可以访问d.html页面-->
+        <security:intercept-url pattern="/d.html"  access="hasAuthority('ABC')" />
+
+        <security:form-login login-page="/login.html" authentication-failure-url="/fail.html"
+                             username-parameter="abc" password-parameter="bbb"
+                             default-target-url="/index.html" always-use-default-target="true"/>
+    <!--  关闭跨域访问控制  -->
+        <security:csrf disabled="true"/>
+    </security:http>
+<!--  认证管理器 提供认证信息  帮我们完成认证与权限的校验  -->
+    <security:authentication-manager>
+        <!--认证信息(登陆用户信息)的提供者-->
+        <!--
+            user-service-ref：对应的spring容器中的bean对象来提供登陆用户信息，容器中的这个bean对象必须实现
+                UserDetailsService接口? loadUserByUsername
+            规范将来security通过哪个方法来获取登陆用户信息。
+        -->
+        <security:authentication-provider user-service-ref="userService">
+            <!--注入加密器 UserService的密码里就不要有{}的东东了 -->
+            <security:password-encoder ref="encoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+    <!--bean对象来获取登陆用户信息-->
+    <bean id="userService" class="com.itheima.security.UserService"/>
+
+    <!--注册加密器-->
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+</beans>

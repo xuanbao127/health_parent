@@ -8,7 +8,7 @@ import java.io.IOException;
  * Description: No Description
  * User: Eric
  */
-public class ServiceApplication {
+public class   ServiceApplication {
     public static void main(String[] args) throws IOException {
         new ClassPathXmlApplicationContext("classpath:applicationContext-service.xml");
         System.in.read();

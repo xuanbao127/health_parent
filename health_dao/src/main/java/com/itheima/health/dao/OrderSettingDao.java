@@ -40,9 +40,7 @@ public interface OrderSettingDao {
     List<Map<String, Integer>> getOrderSettingBetween(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
     /**
-     * 更新
-     * @param orderSetting
-     * @return
+     * 更新已预约人数
      */
     int editReservationsByOrderDate(OrderSetting orderSetting);
 }

@@ -1,6 +1,7 @@
 package com.itheima.health.job;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiNiuUtils;
 import org.springframework.stereotype.Component;
 

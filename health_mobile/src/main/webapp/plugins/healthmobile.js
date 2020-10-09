@@ -53,11 +53,7 @@ function getSpecifiedDate(date,days) {
  */
 function checkTelephone(telephone) {
     var reg=/^[1][3,4,5,7,8][0-9]{9}$/;
-    if (!reg.test(telephone)) {
-        return false;
-    } else {
-        return true;
-    }
+    return reg.test(telephone);
 }
 
 /**
@@ -74,13 +70,14 @@ var nums = 30;
 var validateCodeButton;
 //基于定时器实现30秒倒计时效果
 function doLoop() {
-    validateCodeButton.disabled = true;//将按钮置为不可点击
+    validateCodeButton.disabled = true;//将按钮置为不可点击 灰色
     nums--;
     if (nums > 0) {
+        // 按钮上显示的文本
         validateCodeButton.value = nums + '秒后重新获取';
     } else {
         clearInterval(clock); //清除js定时器
-        validateCodeButton.disabled = false;
+        validateCodeButton.disabled = false; // 可用， 可触发的单击事件
         validateCodeButton.value = '重新获取验证码';
         nums = 30; //重置时间
     }

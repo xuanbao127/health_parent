@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.CzxDao">
+    <insert id="add" parameterType="czx">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select last_insert_id()
+        </selectKey>
+        insert  into t_role(name,keyword,description)
+        values (#{name},#{keyword}#{description})
+    </insert>
+    <insert id="addCzxPermission" parameterType="int">
+        insert  into t_role_permission (rele_id,permission_id)
+        values (#{czxId},#{permissionId})
+    </insert>
+    <insert id="addCzxMenu" parameterType="int">
+        insert  into t_role_menu (rele_id,menu_id)
+        values (#{czxId},#{menuId})
+    </insert>
+</mapper>

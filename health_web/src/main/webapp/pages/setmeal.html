@@ -408,7 +408,7 @@
                 if (response.flag) {
                     // 成功
                     //图片的回显 给imageUrl赋值 图片的完整路径domain+imgName
-                    this.imageUrl = response.data.data; // http://adfsadfasdf/img.jpg
+                    this.imageUrl = response.data.domain + response.data.imgName; // http://adfsadfasdf/img.jpg
                     //补充formData中的img属性(前端中的formData没有img，setmeal实体中有img且它是对应数据库中的字段img)，值为 imgName
                     this.formData.img = response.data.imgName;
                 } else {

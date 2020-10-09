@@ -20,10 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by xuanbao127 on 2020/9/27 5:08 下午
+ * Description: No Description
+ * User: Eric
  */
 @Service(interfaceClass = OrderService.class)
 public class OrderServiceImpl implements OrderService {
+
     @Autowired
     private OrderDao orderDao;
 
@@ -115,7 +117,6 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 订单详情
-     *
      * @param id
      * @return
      */

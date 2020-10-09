@@ -23,7 +23,7 @@ public interface MemberService {
     void add(Member member);
 
     /**
-     * 根据月份统计会员总数
+     * 根据月份来统计每个月的会员总数
      * @param months
      * @return
      */

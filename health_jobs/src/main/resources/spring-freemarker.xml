@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--创建freemarker配置类, 模板目录，编码-->
+    <bean id="freemarkerConfiguration" class="freemarker.template.Configuration">
+        <!--无参被废弃了-->
+        <constructor-arg index="0" ref="freemarkerVersion"/>
+    </bean>
+    <!--通过静态工厂创建bean对象-->
+    <bean id="freemarkerVersion" class="freemarker.template.Configuration" factory-method="getVersion"/>
+</beans>

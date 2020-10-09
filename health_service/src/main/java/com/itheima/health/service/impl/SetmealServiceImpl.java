@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: No Description
@@ -28,19 +29,9 @@ public class SetmealServiceImpl implements SetmealService {
     private SetmealDao setmealDao;
 
     /**
-     * 查询所有的套餐
-     * @return
-     */
-    @Override
-    public List<Setmeal> findAll() {
-        return setmealDao.findAll();
-    }
-
-    /**
      * 添加套餐
      * @param setmeal
      * @param checkgroupIds
-     * @return
      */
     @Override
     @Transactional
@@ -147,6 +138,15 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     /**
+     * 查询所有的套餐
+     * @return
+     */
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealDao.findAll();
+    }
+
+    /**
      *  查询套餐详情
      * @param id
      * @return
@@ -175,5 +175,14 @@ public class SetmealServiceImpl implements SetmealService {
             }
         }
         return setmeal;
+    }
+
+    /**
+     * 统计套餐预约个数
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getSetmealReport() {
+        return setmealDao.getSetmealReport();
     }
 }

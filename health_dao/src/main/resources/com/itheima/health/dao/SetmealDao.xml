@@ -69,7 +69,7 @@
     <select id="findAll" resultType="setmeal">
         select * from t_setmeal
     </select>
-    
+
     <select id="findDetailById" parameterType="int" resultMap="setmealDetailMap">
        select
              s.*,
@@ -84,20 +84,20 @@
              and cg.id=cc.checkgroup_id and cc.checkitem_id=ci.id
              and s.id=#{id}
     </select>
-<!--    1对多关系配置
-　　　　　套餐下有检查组
-　　　　　检查组下有检查项-->
+    <!--    1对多关系配置
+    　　　　　套餐下有检查组
+    　　　　　检查组下有检查项-->
     <resultMap id="setmealDetailMap" type="setmeal">
         <id property="id" column="id"/>
-        <result property="name" column="name" />
-        <result property="code" column="code" />
-        <result property="helpCode" column="helpCode" />
-        <result property="sex" column="sex" />
-        <result property="age" column="age" />
-        <result property="price" column="price" />
-        <result property="remark" column="remark" />
-        <result property="attention" column="attention" />
-        <result property="img" column="img" />
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="helpCode" column="helpCode"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="price" column="price"/>
+        <result property="remark" column="remark"/>
+        <result property="attention" column="attention"/>
+        <result property="img" column="img"/>
         <collection property="checkGroups" ofType="CheckGroup">
             <id property="id" column="checkgroup_id"/>
             <result property="name" column="checkgroup_name"/>
@@ -128,7 +128,6 @@
                     select="com.itheima.health.dao.CheckGroupDao.findCheckGroupListById">
         </collection>
     </resultMap>
-
     <!--根据套餐id查询检查项信息-->
     <select id="findCheckGroupBySetmealId" resultType="checkgroup">
         select * from t_checkgroup  where id
@@ -140,4 +139,10 @@
         select * from t_checkitem  where id
         in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
     </select>
+
+    <select id="getSetmealReport" resultType="map">
+        select s.name,count(1) value from t_setmeal s, t_order o
+        where s.id=o.setmeal_id group by s.id,s.name
+    </select>
+
 </mapper>

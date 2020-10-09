@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<!--【注意】在这个security的配置中，所有的路径必须有/开头-->
+<!--  静态资源过滤  -->
+<!--  security:none不需要任务的控制，可以所有人都可以访问  -->
+<!-- 登陆页面访问，一定要加静态过滤 不加：浏览器报重试次数过多错误   -->
+    <security:http pattern="/login.html" security="none"/>
+    <security:http pattern="/fail.html" security="none"/>
+
+<!--  拦截规则
+auto-config: 自动配置 login处理，登陆页面，退出处理...
+use-expressions: 是否使用spring el表达式
+               true: access的值 hasRole hasAuthority hasAny...
+               false: access的值只能是以ROLE_打头或那3个常量，否则启动报错
+-->
+    <security:http auto-config="true" use-expressions="false">
+        <!--intercept-url: 拦截url, 标定访问的权限
+            pattern: url匹配的规则 /** 拦截所有
+            access: 需要什么的权限才可以访问
+            登陆者必须拥有access中的权限(即可以是角色也可以是权限)才可以访问pattern的路径
+        -->
+        <security:intercept-url pattern="/**" access="ROLE_ADMIN"/>
+    <!--  指定登陆处理
+      login-page:  登陆页面
+authentication-failure-url: 登陆失败时跳转的页面
+username-parameter: 登陆请求时传递的用户名的参数名  security底层是通过request.getParameter(username-parameter)
+password-parameter: 登陆请求时传递的密码的参数名
+default-target-url: 登陆成功后默认跳转的页面 如果是从登陆页面进来的，则登陆成功后跳转到index.html
+                    否则从哪个页面跳转到登陆，登陆后就会跳回原来的页面.
+always-use-default-target: 不管从哪个页面跳转到登陆页面，登陆后后都跳转到default-target-url指定的页面
+      -->
+        <security:form-login login-page="/login.html" authentication-failure-url="/fail.html"
+                             username-parameter="abc" password-parameter="bbb"
+                             default-target-url="/index.html" always-use-default-target="true"/>
+    <!--  关闭跨域访问控制  -->
+        <security:csrf disabled="true"/>
+    </security:http>
+<!--  认证管理器 提供认证信息  帮我们完成认证与权限的校验  -->
+    <security:authentication-manager>
+        <!--认证信息(登陆用户信息)的提供者-->
+        <security:authentication-provider>
+            <!--用户信息服务-->
+            <security:user-service>
+                <!--security:user 在内存中写死一个用户信息
+                    用户名，密码(数据库)，权限集合
+                    authorities: 权限集合
+                    {noop}: no operation 加密的方式，明文
+                -->
+                <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+</beans>

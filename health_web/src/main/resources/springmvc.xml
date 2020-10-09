@@ -32,7 +32,7 @@
     <!--批量扫描 dubbo2.6.0下，mvc不需要再扫controller
         2.6.2 则mvc要扫一次controller component-scan
     -->
-    <dubbo:annotation package="com.itheima.health.controller" />
+    <dubbo:annotation package="com.itheima.health" />
     <!--
         超时全局设置 10分钟
         check=false 不检查服务提供方，开发阶段建议设置为false
@@ -46,4 +46,7 @@
         <property name="maxInMemorySize" value="4096" />
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
+    <import resource="classpath:spring-security.xml"/>
+    <import resource="classpath:spring-redis.xml"/>
+
 </beans>
